@@ -1,0 +1,31 @@
+﻿version: '3.8'
+
+services:
+  pagamento-microservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pagamento-microservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MONGO_CONNECTION_STRING=mongodb://mongo:27017/PagamentoDatabase  
+      - AWS_ACCESS_KEY_ID=test  
+      - AWS_SECRET_ACCESS_KEY=test  
+      - AWS_DEFAULT_REGION=us-east-1  
+      - SQS_URL=http://localstack:4566  
+    ports:
+      - "5000:80"  
+    networks:
+      - localstack-network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"  
+    networks:
+      - localstack-network
+
+networks:
+  localstack-network:
+    external: true

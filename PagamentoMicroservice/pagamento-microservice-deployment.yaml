@@ -1,0 +1,43 @@
+﻿apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: pagamento-microservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pagamento-microservice
+  template:
+    metadata:
+      labels:
+        app: pagamento-microservice
+    spec:
+      containers:
+        - name: pagamento-microservice
+          image: pagamento_microservice:latest  
+          ports:
+            - containerPort: 8080  
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"  
+            - name: ConnectionStrings__MongoDbConnection
+              value: "mongodb://mongo-db:27017/pagamento_db" 
+            - name: SQS_ENDPOINT
+              value: "http://localstack:4566" 
+            - name: DATABASE_NAME
+              value: "pagamento_db"  
+            - name: SQS_QUEUE_NAME
+              value: "pagamento-queue"  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pagamento-microservice-service
+spec:
+  selector:
+    app: pagamento-microservice
+  ports:
+    - protocol: TCP
+      port: 8080  
+      targetPort: 8080  
+  type: ClusterIP 

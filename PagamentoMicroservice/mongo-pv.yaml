@@ -1,0 +1,14 @@
+﻿apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv
+spec:
+  capacity:
+    storage: 5Gi  # Tamanho do volume (ajuste conforme necessário)
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce  # O volume pode ser montado como leitura e escrita por apenas um pod
+  persistentVolumeReclaimPolicy: Retain  # Política de retenção de dados após o PV ser excluído
+  storageClassName: manual  # Classe de armazenamento (pode ser ajustada conforme o seu provedor)
+  hostPath:
+    path: /mnt/data/mongo  # Caminho do volume no nó local
