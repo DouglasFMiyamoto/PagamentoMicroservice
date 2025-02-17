@@ -11,7 +11,7 @@ COPY ["PagamentoMicroservice/PagamentoMicroservice.csproj", "./"]
 RUN dotnet restore "PagamentoMicroservice.csproj"
 
 # Copia todos os arquivos para o container
-COPY . .
+COPY PagamentoMicroservice/. .
 
 WORKDIR "/src"
 # Roda o build e publica
